@@ -15,7 +15,7 @@ database.init_app(app) # Conecta o banco de dados ao aplicativo Flask
 
 with app.app_context():
     database.create_all()
-    print("Banco de Dados inicializado com sucesso!")
+    print("Tabelas criadas/verificadas com sucesso!")
 
 # Contexto do Aplicativo: Cria as tabelas no banco de dados se elas não existirem
 with app.app_context():
