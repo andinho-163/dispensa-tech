@@ -13,6 +13,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dispensa.db'
 # Inicialização do Banco de Dados
 database.init_app(app) # Conecta o banco de dados ao aplicativo Flask
 
+with app.app_context():
+    database.create_all()
+    print("Banco de Dados inicializado com sucesso!")
+
 # Contexto do Aplicativo: Cria as tabelas no banco de dados se elas não existirem
 with app.app_context():
     pass # As tabelas são gerenciadas automaticamente pelo modelo em 'models.py'
