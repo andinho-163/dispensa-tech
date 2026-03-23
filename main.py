@@ -9,7 +9,7 @@ from deep_translator import GoogleTranslator
 # Configuração do Aplicativo Flask
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dispensa.db'
-
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "chave-secreta-da-tijuca")
 # Inicialização do Banco de Dados
 database.init_app(app) # Conecta o banco de dados ao aplicativo Flask
 
@@ -213,14 +213,16 @@ def consultar_receitas():
 
                     # AUTOMAÇÃO DE TRADUÇÃO: Traduzimos o nome e o preparo
                     nome_prato = tradutor.translate(detalhes['strMeal'])
-                    preparo_prato = tradutor.translate(detalhes['strInstructions'])
+                    preparo_prato = tradutor.translate(detalhes['strInstructions'][:500])
                     foto_prato = detalhes['strMealThumb']
                     break
-        except:
+        except Exception as e:
+            print(f"Erro na tradução: {e}")
             continue
 
     if not nome_prato:
-        erro = "Não encontrei receitas para traduzir no momento."
+        from flask import flash
+        flash("⚠️ Nenhuma receita encontrada ou erro na conexão com o tradutor.")
 
     todos = Ingrediente.query.all()
     return render_template('index.html', ingredientes=todos, total_itens=len(todos),
