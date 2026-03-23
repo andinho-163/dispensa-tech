@@ -225,7 +225,7 @@ def consultar_receitas():
 
 
 
-if __name__ == '__main__':
-    # O Render/Heroku define a porta na variável de ambiente PORT
+if __name__ == "__main__":
+    # O Render injeta a porta automaticamente nesta variável de ambiente
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host="0.0.0.0", port=port)
