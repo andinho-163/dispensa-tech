@@ -25,6 +25,7 @@ O **Dispensa Tech** é um SaaS (Software as a Service) focado na organização d
 - **Frontend:** HTML5, CSS3 (Variáveis e Flexbox) e Vanilla JavaScript.
 - **Integrações:** API TheMealDB e Deep Translator.
 
+
 ---
 
 ## 🚀 Como Executar o Projeto Localmente
