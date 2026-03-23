@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dispensa Tech - Anderson</title>
+    <style>
+        /* Variáveis de Cores para o Toggle de Tema */
+        :root {
+            --bg-body: #f4f4f4;
+            --bg-container: #ffffff;
+            --text-main: #333333;
+            --border: #ddd;
+            --bg-form: #eee;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #121212;
+            --bg-container: #1e1e1e;
+            --text-main: #e0e0e0;
+            --border: #333;
+            --bg-form: #2d2d2d;
+        }
+
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; background-color: var(--bg-body); color: var(--text-main); transition: 0.3s; }
+
+        /* Botão Tema */
+        .theme-switch { float: right; cursor: pointer; padding: 10px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-container); font-size: 20px; }
+
+        table { width: 100%; border-collapse: collapse; background: var(--bg-container); margin-top: 10px; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+        th { background-color: #007bff; color: white; }
+
+        /* Botões Estilizados */
+        .btn-add { background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+        .btn-remove { background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+        .btn-delete { background-color: #343a40; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-left: 5px; }
+        button:hover { opacity: 0.8; }
+
+        .recipe-box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; color: #333; border: 1px solid var(--border); }
+        [data-theme="dark"] .recipe-box { background: #2d2d2d; color: #e0e0e0; }
+    </style>
+</head>
+
+<body>
+    <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">🌙</button>
+
+    <h1>📋 Gestão de Estoque - Anderson</h1>
+    <p>📊 Você tem <strong>{{ total_itens }}</strong> ingredientes cadastrados.</p>
+
+    <form action="/cadastrar" method="POST" style="margin-bottom: 20px; background: var(--bg-form); padding: 15px; border-radius: 8px;">
+        <h3> Novo Ingrediente </h3>
+        <input type="text" name="nome" placeholder="Nome" required style="padding: 5px;">
+        <input type="text" name="categoria" placeholder="Categoria" required style="padding: 5px;">
+        <input type="number" step="0.1" name="quantidade" placeholder="Qtd" required style="width: 60px; padding: 5px;">
+        <input type="text" name="unidade" placeholder="Unid" required style="width: 60px; padding: 5px;">
+        <button type="submit" style="background: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Cadastrar na Dispensa</button>
+    </form>
+
+    <div style="background: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px; color: #333;">
+        <h3 style="margin-top: 0;">👨‍🍳 Assistente de Cozinha Virtual</h3>
+        <a href="/consultar_receitas"><button style="background: #17a2b8; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">🔍 Receita Web Traduzida</button></a>
+        <a href="/gerar_lista"><button style="background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">🛒 Gerar Lista de Compras</button></a>
+
+        {% if lista_texto %}
+            <div style="margin-top: 20px; background: #fff3cd; padding: 15px; border: 1px solid #ffeeba; border-radius: 8px; color: #856404;">
+                <pre style="white-space: pre-wrap;">{{ lista_texto }}</pre>
+                <a href="/" style="font-size: 12px; color: #856404;">[ Limpar ]</a>
+            </div>
+        {% endif %}
+
+        {% if nome_receita %}
+            <div class="recipe-box" style="margin-top: 20px;">
+                <h2 style="color: #17a2b8;">{{ nome_receita }}</h2>
+                <img src="{{ foto_receita }}" style="max-width: 200px; border-radius: 8px;">
+                <h4>Modo de Preparo:</h4>
+                <p style="white-space: pre-line; text-align: justify;">{{ preparo_receita }}</p>
+                <a href="/" style="font-size: 12px; color: #888;">[ Limpar Receita ]</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="inputBusca" onkeyup="filtrarTabela()" placeholder="🔍 Pesquisar ingrediente..."
+               style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-container); color: var(--text-main);">
+    </div>
+
+    <table>
+        <tr>
+            <th>Ingredientes</th>
+            <th>Quantidade</th>
+            <th>Aviso</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+
+        {% for item in ingredientes %}
+        <tr style="background-color: {{ '#fff3cd' if item.quantidade < 2 and item.quantidade > 0 else 'transparent' }}">
+            <td><strong>{{ item.nome }}</strong></td>
+            <td>{{ item.quantidade }} {{ item.unidade }}</td>
+            <td>
+                {% if item.quantidade < 2 and item.quantidade > 0 %}
+                    <span style="color: #856404; font-weight: bold;">⚠️ Baixo</span>
+                {% elif item.quantidade == 0 %}
+                    <span style="color: red; font-weight: bold">🚫 Acabou!</span>
+                {% else %}
+                    <span style="color: green;">✅ OK</span>
+                {% endif %}
+            </td>
+            <td>{{ "✅" if item.esta_disponivel else "❌" }}</td>
+            <td>
+                <a href="/adicionar/{{ item.id }}"><button class="btn-add">➕</button></a>
+                <a href="/remover/{{ item.id }}"><button class="btn-remove">➖</button></a>
+                <a href="/excluir/{{ item.id }}" onclick="return confirm('Apagar {{ item.nome }}?')"><button class="btn-delete">🗑️</button></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        // Lógica do Dark Mode
+        function toggleTheme() {
+            const body = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                btn.innerText = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.innerText = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('themeBtn').innerText = '☀️';
+        }
+
+        // Lógica da Barra de Busca
+        function filtrarTabela() {
+            let filter = document.getElementById("inputBusca").value.toLowerCase();
+            let trs = document.querySelectorAll("table tr:not(:first-child)");
+            trs.forEach(tr => {
+                let nome = tr.cells[0].innerText.toLowerCase();
+                tr.style.display = nome.includes(filter) ? "" : "none";
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+🛒 LISTA DE COMPRAS - DISPENSA ANDERSON
+--------------------------------------
+[ ] Arroz (Carboidrato)
+[ ] Feijão (Carboidrato)
+[ ] Lombo Suíno (Proteína)
+[ ] Frango (Proteína)
+[ ] Torresmo (Proteína)
+[ ] Coca-Cola  (Refresco)

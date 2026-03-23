@@ -1,0 +1,25 @@
+# Banco de Dados Local (SQLite)
+# No deploy, o servidor criará um novo ou usaremos um banco externo (Postgres)
+*.db
+
+# Ambientes Virtuais (VENV)
+venv/
+env/
+ENV/
+.env
+
+# Arquivos de Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pastas de IDE (PyCharm / VS Code)
+.idea/
+.vscode/
+
+# Arquivos de log e temporários
+*.log
+.DS_Store
+
+# Arquivos de testes
+.Lógica de DB

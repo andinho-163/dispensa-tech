@@ -1,0 +1,41 @@
+# # Adicionando novos itens
+    # #novo_item = Ingrediente(nome="Lombo Suíno", categoria="Proteína")
+    # #item1 = Ingrediente(nome="Macarrão", categoria="Carboidrato")
+    # #item2 = Ingrediente(nome="Alho", categoria="Tempero")
+    #
+    # # Adicionando um novo item
+    # #database.session.add(item2)
+    #
+    # # Salvando um novo item
+    # #database.session.commit()
+    # #print("Item cadastrado com sucesso!")
+    #
+    #
+    # # Pegando as listas do db
+    # proteinas = Ingrediente.query.filter_by(categoria='Proteína', esta_disponivel=True).all()
+    # carboidratos = Ingrediente.query.filter_by(categoria='Carboidrato', esta_disponivel=True).all()
+    #
+    # # Sorteo se as linhas estiverem disponiveis
+    # if proteinas and carboidratos:
+    #     proteina_escolhida = random.choice(proteinas)
+    #     carboidrato_escolhido = random.choice(carboidratos)
+    #
+    #     print(f"--- SUGESTÃO DE JANTA---")
+    #     print(f"Hoje você vai comer: {proteina_escolhida.nome} com {carboidrato_escolhido.nome}!")
+    # else:
+    #     print("Ih, Precisa cadastrar mais itens para o sorteio funcionar")
+    #
+    #
+    # # Dar baixa na dispensa
+    # # # Buscar ingrediente pelo nome
+    #
+    # ingrediente_comido = Ingrediente.query.filter_by(nome="Lombo Suíno").first()
+    #
+    # if ingrediente_comido:
+    #     # Mudar o status para False
+    #     ingrediente_comido.esta_disponivel=False
+    #
+    #
+    #     #Slvar a mudança no DB
+    #     database.session.commit()
+    #     print(f"Estoque atualizado {ingrediente_comido.nome} agora está indisponível")

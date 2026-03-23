@@ -1,0 +1,97 @@
+# while True:
+    #     print("\n--- MENU DA DISPENSA---")
+    #     print("1 - Sortear Janta")
+    #     print("2 - Cadastrar novo Ingrediente")
+    #     print("3 - Listar toda Dispensa")
+    #     print("4 - Atualizar Dispensa")
+    #     print("5 - Adicionar/Remover Quantidade (Estoque)")
+    #     print("0 - Sair")
+    #
+    #     opcao = input("Escolha uma opção: ")
+    #
+    #     if opcao == "1":
+    #         # Aqui é a lógica de sorteio
+    #         proteinas = Ingrediente.query.filter_by(categoria='Proteína', esta_disponivel=True).all()
+    #         carboidratos = Ingrediente.query.filter_by(categoria='Carboidrato', esta_disponivel=True).all()
+    #
+    #         if proteinas and carboidratos:
+    #             proteina = random.choice(proteinas)
+    #             carboidrato = random.choice(carboidratos)
+    #             print(f"\n Sugestão: {proteina.nome} com {carboidrato.nome}!")
+    #         else:
+    #             print("\n❌ Faltam ingredientes para o sorteio! Tente cadastrar novos ingredientes.")
+    #
+    #
+    #     elif opcao == "2":
+    #         # Aqui o banco de dados se alimenta sozinho com o que for digitado pelo usuário
+    #         nome_input = input("Insira o nome do Ingrediente: ")
+    #         categoria_input = input("Categoria(Proteína/Carboidrato/Tempero):")
+    #         quantidade_float = float(input("Digite a quantidade (Ex: 1.5): "))
+    #         unidade_input = input("Unidade (Kg, g, Und): ")
+    #
+    #
+    #
+    #         try:
+    #             novo = Ingrediente(
+    #                                nome=nome_input,
+    #                                categoria=categoria_input,
+    #                                quantidade=quantidade_float,
+    #                                unidade=unidade_input
+    #                                 )
+    #             database.session.add(novo)
+    #             database.session.commit()
+    #             print(f"\n✅ {nome_input} salvo com sucesso!")
+    #         except Exception as e:
+    #             database.session.rollback()
+    #             print("\n❌ Erro: Esse item já existe ou algo deu errado!")
+    #
+    #     elif opcao == "3":
+    #         todos = Ingrediente.query.all()
+    #         print("\n ---ITENS NA DISPENSA---")
+    #         for item in todos:
+    #             status = "Disponível" if item.esta_disponivel else "Esgotado"
+    #             print(f"- {item.nome} ({item.categoria}) Estoque: {item.quantidade} | {status}")
+    #
+    #     elif opcao == "4":
+    #         nome_update = input("Qual ingrediente acabou? ")
+    #
+    #         item = Ingrediente.query.filter_by(nome=nome_update).first()
+    #
+    #         if item:
+    #             # ATUALIZA O ESTOQUE DO INGREDIENTE
+    #             item.esta_disponivel = not item.esta_disponivel
+    #             database.session.commit()
+    #             status_final = "Disponível" if item.esta_disponivel else "Esgotado"
+    #             print(f"\n✅ Status de {item.nome} atualizado para {status_final}")
+    #         else:
+    #             print("\n❌ Ingrediente não encontrado")
+    #
+    #     elif opcao == "5":
+    #         nome_alvo = input("Qual ingrediente você deseja atualizar o estoque?")
+    #         item = Ingrediente.query.filter_by(nome=nome_alvo).first()
+    #
+    #         if item:
+    #             operacao = input("Voçê quer (1) Adicionar ou (2) Remover?")
+    #             valor = float(input("Quantidade: "))
+    #
+    #             if operacao == "1":
+    #                 item.quantidade += valor
+    #             elif operacao == "2":
+    #                 if item.quantidade >= valor:
+    #                     item.quantidade-=valor
+    #                 else:
+    #                     print("❌Estoque insuficiente")
+    #
+    #                #Aqui o status atualiza sozinho
+    #             item.esta_disponivel = True if item.quantidade > 0 else False
+    #
+    #             database.session.commit()
+    #             print(f"✅ Novo estoque de {item.nome}: {item.quantidade} {item.unidade}")
+    #         else:
+    #             print("❌ Item não encontrado.")
+    #
+    #     elif opcao== "0":
+    #         print("Fechando o sistema... Até a próxima janta!")
+    #         break
+    #     else:
+    #         print("Opção inválida!")
